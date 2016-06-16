@@ -1,10 +1,9 @@
-use core::usize;
+use core::{ usize, mem };
 
 use c_types::*;
 
 #[no_mangle]
 pub unsafe extern "C" fn strlen(mut s: *const c_schar) -> size_t {
-    use core::mem;
     
     #[inline]
     fn align() -> usize { mem::size_of::<size_t>() }
