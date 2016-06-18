@@ -17,7 +17,7 @@ pub unsafe extern "C" fn strspn(string: *const c_schar, chars: *const c_schar) -
         }
     }
 
-    let mut bit_array = BitArray::new();
+    let mut bit_array = AsciiBitArray::new();
     let mut i = 0;
     loop {
         let c = *chars.offset(i);
@@ -44,12 +44,12 @@ const ASCII_MAX_VALUE: usize = 127;
 const U32_N_BITS: usize = 8 * 4;
 const BIT_ARRAY_LEN: usize = 1 + ASCII_MAX_VALUE / U32_N_BITS;
 
-struct BitArray {
+struct AsciiBitArray {
     bit_array: [u32; BIT_ARRAY_LEN],
 }
 
-impl BitArray {
-    fn new() -> BitArray { BitArray { bit_array: [0; BIT_ARRAY_LEN] } }
+impl AsciiBitArray {
+    fn new() -> AsciiBitArray { AsciiBitArray { bit_array: [0; BIT_ARRAY_LEN] } }
 
     fn set_bit(&mut self, index: usize) {
         let value = (1u32 << (index % U32_N_BITS)) as u32;
