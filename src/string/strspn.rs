@@ -10,7 +10,9 @@ pub unsafe extern "C" fn strspn(string: *const c_schar, chars: *const c_schar) -
     if *chars.offset(1) == 0 {
         let mut i = 0;
         loop {
-            if *string.offset(i) != *chars { return i as usize; }
+            if *string.offset(i) != *chars {
+                return i as usize;
+            }
             i += 1;
         }
     }
@@ -19,7 +21,9 @@ pub unsafe extern "C" fn strspn(string: *const c_schar, chars: *const c_schar) -
     let mut i = 0;
     loop {
         let c = *chars.offset(i);
-        if c == 0 { break }
+        if c == 0 {
+            break;
+        }
         bit_array.set_bit(c as usize);
         i += 1;
     }
@@ -27,7 +31,9 @@ pub unsafe extern "C" fn strspn(string: *const c_schar, chars: *const c_schar) -
     let mut j = 0;
     loop {
         let s = *string.offset(j);
-        if s == 0 || !bit_array.get_bit(s as usize) { break }
+        if s == 0 || !bit_array.get_bit(s as usize) {
+            break;
+        }
         j += 1;
     }
 
@@ -39,13 +45,11 @@ const U32_N_BITS: usize = 8 * 4;
 const BIT_ARRAY_LEN: usize = 1 + ASCII_MAX_VALUE / U32_N_BITS;
 
 struct BitArray {
-    bit_array: [u32; BIT_ARRAY_LEN]
+    bit_array: [u32; BIT_ARRAY_LEN],
 }
 
 impl BitArray {
-    fn new() -> BitArray {
-        BitArray { bit_array: [0; BIT_ARRAY_LEN] }
-    }
+    fn new() -> BitArray { BitArray { bit_array: [0; BIT_ARRAY_LEN] } }
 
     fn set_bit(&mut self, index: usize) {
         let value = (1u32 << (index % U32_N_BITS)) as u32;
