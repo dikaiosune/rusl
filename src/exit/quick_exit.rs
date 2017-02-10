@@ -3,10 +3,10 @@ use super::_Exit::_Exit;
 
 #[linkage = "weak"]
 #[no_mangle]
-pub unsafe extern "C" fn __funcs_on_quick_exit() {}
+pub extern "C" fn __funcs_on_quick_exit() {}
 
 #[no_mangle]
-pub unsafe extern "C" fn quick_exit(code: c_int) {
+pub extern "C" fn quick_exit(code: c_int) {
     __funcs_on_quick_exit();
     _Exit(code)
 }
