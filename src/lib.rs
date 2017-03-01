@@ -1,11 +1,12 @@
 #![no_std]
-#![feature(asm, const_fn, lang_items, linkage, compiler_builtins_lib)]
+#![feature(asm, const_fn, lang_items, linkage, compiler_builtins_lib, core_intrinsics)]
 
 #![allow(non_camel_case_types)]
 
 extern crate compiler_builtins;
 #[macro_use]
 extern crate lazy_static;
+extern crate libc;
 extern crate rlibc;
 extern crate spin;
 extern crate sc as syscall;
@@ -17,6 +18,7 @@ pub use rlibc::*;
 pub mod syscall_mgt;
 
 pub mod exit;
+pub mod fcntl;
 pub mod malloc;
 pub mod mmap;
 pub mod string;
@@ -36,7 +38,9 @@ pub use platform::mman;
 pub use platform::pthread;
 pub use platform::signal;
 
+use core::intrinsics;
 #[cfg(not(test))]
 #[lang = "panic_fmt"]
-#[no_mangle]
-extern "C" fn panic_fmt() {}
+extern "C" fn rust_begin_panic(_msg: core::fmt::Arguments, _file: &'static str, _line: u32) -> ! {
+    unsafe { intrinsics::abort() }
+}

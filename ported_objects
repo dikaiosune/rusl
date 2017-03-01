@@ -31,6 +31,7 @@ mlockall.o
 mmap.o
 mremap.o
 munmap.o
+open.o
 quick_exit.o
 stpcpy.o
 strcmp.o
